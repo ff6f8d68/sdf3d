@@ -1,0 +1,14 @@
+{
+    "required": true,
+    "minVersion": "0.8.5",
+    "package": "mods.hexagon.sdf3d.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "mixins": [],
+    "client": [
+        "OptionsSubScreenMixin"
+    ],
+    "server": [],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

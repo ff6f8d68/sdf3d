@@ -1,0 +1,4 @@
+{
+    "loader": "sdf3d:sdf",
+    "model": "sdf3d:sdf/example_sphere"
+}

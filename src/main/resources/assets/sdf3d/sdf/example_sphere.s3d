@@ -1,0 +1,154 @@
+// ============================================================================
+// SDF3D SHOWCASE MODEL: "Sculpted Humanoid"
+// ----------------------------------------------------------------------------
+// One model that exercises every feature of the .s3d format at once:
+//
+//   Sculpting (the headline): the head is a plain SPHERE that gets carved
+//     (eye sockets, mouth, waist groove, chest window) and stamped (eyes,
+//     ears, nose, hair, belt buckle) until it reads as a human.
+//   Primitive shapes: sphere, ellipsoid, capsule, box, rounded_box, torus,
+//     hex_prism, octahedron.
+//   Group animation: named limb groups (arm/leg/head/torso/face) instanced
+//     with independent keyframed transforms - a walk cycle.
+//   Keyframe animation with custom easing: keyframe_rotate (arms, legs),
+//     keyframe_scale (beating heart), keyframe_translate (head sway), with
+//     easing = easeInOut.
+//   Morphing: the head morphs between the sculpted face and a plain sphere.
+//   UV mapping: triplanar block-atlas texture over the whole figure (PBR).
+//   Plus: spin (turntable), bob (hover), pulse (breathing), twist (living
+//     sway), bend (hair curl), rotate / round / onion / stretch.
+// ============================================================================
+
+// ---------------------------------------------------------------------------
+// Material directives
+// ---------------------------------------------------------------------------
+texture = "minecraft:block/iron_block";
+tint = 0xFFFFFFFF;
+emissive = false;
+roughness = 0.25;
+metallic = 0.9;
+easing = easeInOut;
+
+// ---------------------------------------------------------------------------
+// Groups
+// ---------------------------------------------------------------------------
+
+// The skull: a sphere with a soft chin bulge. This is the "sphere" we sculpt.
+group("head") {
+    blend(0.06, sphere(0, 0, 0, 0.24), ellipsoid(0, -0.06, 0.02, 0.22, 0.21, 0.235))
+}
+
+// Hair cap, bent slightly so it curls over the skull.
+group("hair") {
+    bend(0.5, ellipsoid(0, 0.155, 0.02, 0.245, 0.11, 0.23))
+}
+
+// The sculpted face: start from the head sphere, carve out the eye sockets
+// and mouth, then stamp the eyes, ears, nose and hair back on.
+group("face") {
+    stamp(                                  // 7. hair
+        stamp(                              // 6. nose
+            stamp(                          // 5. right ear
+                stamp(                      // 4. left ear
+                    stamp(                  // 3. right eye
+                        stamp(              // 2. left eye
+                            carve(          // 1c. mouth
+                                carve(      // 1b. right socket
+                                    carve(  // 1a. left socket
+                                        group("head"),
+                                        translate(-0.085, 0.045, -0.21, sphere(0, 0, 0, 0.042))
+                                    ),
+                                    translate(0.085, 0.045, -0.21, sphere(0, 0, 0, 0.042))
+                                ),
+                                translate(0, -0.105, -0.20, box(0, 0, 0, 0.075, 0.022, 0.035))
+                            ),
+                            translate(-0.085, 0.045, -0.23, sphere(0, 0, 0, 0.03))
+                        ),
+                        translate(0.085, 0.045, -0.23, sphere(0, 0, 0, 0.03))
+                    ),
+                    translate(-0.245, 0, 0, sphere(0, 0, 0, 0.055))
+                ),
+                translate(0.245, 0, 0, sphere(0, 0, 0, 0.055))
+            ),
+            translate(0, -0.025, -0.235, ellipsoid(0, 0, 0, 0.035, 0.055, 0.025))
+        ),
+        group("hair")
+    )
+}
+
+// The torso: chest and hips blended, a waist groove carved in, and the chest
+// wall carved open so the beating heart shows through the window.
+group("torso") {
+    carve(
+        carve(
+            blend(0.08,
+                ellipsoid(0, 0.34, 0, 0.30, 0.33, 0.22),
+                ellipsoid(0, 0, 0, 0.26, 0.20, 0.20)
+            ),
+            torus(0, 0.17, 0, 0.24, 0.045)
+        ),
+        rounded_box(0, 0.34, -0.14, 0.055, 0.075, 0.10, 0.02)
+    )
+}
+
+// An arm: shoulder ball, upper arm, forearm and hand, jointed at the shoulder.
+group("arm") {
+    smooth_union(0.06,
+        sphere(0, 0, 0, 0.11),
+        smooth_union(0.06,
+            capsule(0, 0, 0, 0, -0.35, 0, 0.08),
+            smooth_union(0.06,
+                capsule(0, -0.35, 0, 0, -0.68, 0, 0.07),
+                sphere(0, -0.74, 0, 0.08)
+            )
+        )
+    )
+}
+
+// A leg: thigh, shin and foot, jointed at the hip.
+group("leg") {
+    smooth_union(0.06,
+        capsule(0, 0, 0, 0, -0.42, 0, 0.10),
+        smooth_union(0.06,
+            capsule(0, -0.42, 0, 0, -0.78, 0, 0.085),
+            stretch(1.0, 0.55, 1.8, sphere(0, -0.80, 0.045, 0.09))
+        )
+    )
+}
+
+// ---------------------------------------------------------------------------
+// Root: assemble the figure, then animate everything.
+// ---------------------------------------------------------------------------
+spin(0, 1, 0, 12,                                   // slow turntable
+    bob(0, 1, 0, 0.05, 0.5,                         // gentle hover
+        twist(0.15,                                 // subtle living twist
+            smooth_union(0.09,
+                // Head: morphs between the sculpted face and a plain sphere,
+                // swaying side to side on a keyframed track.
+                translate(0, 1.62, 0,
+                    keyframe_translate(4, 0, -0.03, 0, 0, 2, 0.03, 0, 0,
+                        morph(group("face"), sphere(0, 0, 0, 0.24), 6.0)
+                    )
+                ),
+                // Neck.
+                capsule(0, 1.40, 0, 0, 1.52, 0, 0.09),
+                // Torso (breathing) with the heart window.
+                translate(0, 0.80, 0, pulse(0.97, 1.03, 0.33, group("torso"))),
+                // Beating heart, visible through the carved chest window.
+                translate(0, 1.14, -0.06,
+                    keyframe_scale(1.5, 0, 1.0, 0.75, 1.18, 1.5, 1.0, 1.5, 1.0,
+                        octahedron(0, 0, 0, 0.07)
+                    )
+                ),
+                // Hollow hexagonal belt buckle, tilted.
+                translate(0, 0.80, -0.17, rotate(0, 0, 8, round(0.01, onion(0.02, hex_prism(0, 0, 0, 0.055, 0.09))))),
+                // Arms: mirrored walk cycle (opposite phases).
+                translate(-0.33, 1.30, 0, keyframe_rotate(1, 0, 0, 2.0, 0, 15, 1, -15, group("arm"))),
+                translate( 0.33, 1.30, 0, keyframe_rotate(1, 0, 0, 2.0, 0, -15, 1, 15, group("arm"))),
+                // Legs: walk cycle, out of phase with the arms.
+                translate(-0.12, 0.80, 0, keyframe_rotate(1, 0, 0, 2.0, 0, -10, 1, 10, group("leg"))),
+                translate( 0.12, 0.80, 0, keyframe_rotate(1, 0, 0, 2.0, 0, 10, 1, -10, group("leg")))
+            )
+        )
+    )
+)

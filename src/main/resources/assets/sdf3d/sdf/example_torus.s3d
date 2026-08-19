@@ -1,0 +1,6 @@
+// A torus example, usable via the sdf3d:sdf model loader or Sdf3dApi.place().
+tint = 0xFF66CCFF;
+emissive = false;
+roughness = 0.4;
+
+torus(0, 0, 0, 0.35, 0.18)

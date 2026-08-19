@@ -1,0 +1,16 @@
+{
+  "itemGroup.sdf3d": "SDF3D",
+  "block.sdf3d.example_block": "Example Block",
+  "item.sdf3d.example_item": "Example Item",
+  "block.sdf3d.example_sdf_block": "Example SDF Block",
+  "options.sdf3d.models": "SDF Models",
+  "options.sdf3d.models.tooltip": "Raymarch .s3d models (items and placed blocks) instead of meshing them.",
+  "options.sdf3d.world": "SDF World",
+  "options.sdf3d.world.tooltip": "Raymarch the whole terrain as a signed distance field. Experimental and slow; off by default.",
+  "options.sdf3d.postEffect": "SDF Post Effect",
+  "options.sdf3d.postEffect.tooltip": "Post-processing computed from the signed distance field, applied to everything.",
+  "options.sdf3d.postEffect.none": "None",
+  "options.sdf3d.postEffect.ao": "Ambient Occlusion",
+  "options.sdf3d.postEffect.glow": "Edge Glow",
+  "options.sdf3d.postEffect.softShadow": "Soft Shadows"
+}

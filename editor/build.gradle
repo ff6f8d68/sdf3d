@@ -1,0 +1,58 @@
+// Standalone SDF3D model editor. A plain desktop application (JavaFX) that reuses the
+// mod's pure-Java .s3d core (parser + graph + evaluator) so the editor can never drift
+// from the in-game file format.
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.joml:joml:1.10.5'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+javafx {
+    version = '21.0.4'
+    modules = ['javafx.controls']
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+application {
+    mainClass = 'mods.hexagon.sdf3d.editor.EditorApp'
+    applicationName = 'sdf3d-editor'
+}
+
+// Reuse the mod's SDF core sources directly, so the editor and the game share one parser.
+// SdfShaderGenerator is GPU-specific (the editor uses the CPU raymarcher) and is excluded.
+sourceSets {
+    main {
+        java {
+            srcDir rootProject.file('src/main/java/mods/hexagon/sdf3d/sdf')
+            exclude '**/SdfShaderGenerator.java'
+        }
+    }
+}
+
+tasks.named('run', JavaExec) {
+    // The editor renders a software preview; give it some headroom.
+    maxHeapSize = '1g'
+}
+
+// The application plugin already produces a runnable distribution:
+//   ./gradlew :editor:installDist  -> editor/build/install/sdf3d-editor/bin/sdf3d-editor
+//   ./gradlew :editor:distZip      -> editor/build/distributions/sdf3d-editor.zip
+// Dev run: ./gradlew :editor:run

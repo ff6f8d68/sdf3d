@@ -1,0 +1,44 @@
+{
+    "blend": {
+        "func": "add",
+        "srcrgb": "srcalpha",
+        "dstrgb": "1-srcalpha"
+    },
+    "vertex": "sdf3d:sdf_item",
+    "fragment": "sdf3d:sdf_item",
+    "attributes": [
+        "Position"
+    ],
+    "samplers": [
+        { "name": "uAtlas" }
+    ],
+    "uniforms": [
+        { "name": "ModelViewMat", "type": "matrix4x4", "count": 16, "values": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1] },
+        { "name": "ProjMat", "type": "matrix4x4", "count": 16, "values": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1] },
+        { "name": "uInvPose", "type": "matrix4x4", "count": 16, "values": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1] },
+        { "name": "uNodes", "type": "float", "count": 2304, "values": [0] },
+        { "name": "uCamLocal", "type": "float", "count": 3, "values": [0,0,2] },
+        { "name": "uDirLocal", "type": "float", "count": 3, "values": [0,0,-1] },
+        { "name": "uBoundsMin", "type": "float", "count": 3, "values": [-1,-1,-1] },
+        { "name": "uBoundsMax", "type": "float", "count": 3, "values": [1,1,1] },
+        { "name": "uOrtho", "type": "float", "count": 1, "values": [0] },
+        { "name": "uNodeCount", "type": "float", "count": 1, "values": [0] },
+        { "name": "uRoot", "type": "float", "count": 1, "values": [0] },
+        { "name": "uTime", "type": "float", "count": 1, "values": [0] },
+        { "name": "uTint", "type": "float", "count": 4, "values": [1,1,1,1] },
+        { "name": "uEmissive", "type": "float", "count": 1, "values": [0] },
+        { "name": "uRoughness", "type": "float", "count": 1, "values": [0.7] },
+        { "name": "uMetallic", "type": "float", "count": 1, "values": [0] },
+        { "name": "uEffect", "type": "float", "count": 1, "values": [0] },
+        { "name": "uHasTexture", "type": "float", "count": 1, "values": [0] },
+        { "name": "uSpriteRect", "type": "float", "count": 4, "values": [0, 0, 1, 1] },
+        { "name": "uLightDir", "type": "float", "count": 3, "values": [0.5, 1, 0.3] },
+        { "name": "uLocalClip", "type": "matrix4x4", "count": 16, "values": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1] },
+        { "name": "uSkyLight", "type": "float", "count": 1, "values": [1] },
+        { "name": "uBlockLight", "type": "float", "count": 1, "values": [1] },
+        { "name": "uLightCount", "type": "float", "count": 1, "values": [0] },
+        { "name": "uLights", "type": "float", "count": 32, "values": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] },
+        { "name": "uEasing", "type": "float", "count": 1, "values": [0] },
+        { "name": "uBezier", "type": "float", "count": 4, "values": [0.42, 0, 0.58, 1] }
+    ]
+}

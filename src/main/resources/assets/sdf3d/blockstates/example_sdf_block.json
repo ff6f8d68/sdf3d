@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "sdf3d:block/example_sdf_block" }
+    }
+}

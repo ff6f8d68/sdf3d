@@ -1,0 +1,23 @@
+{
+    "vertex": "sdf3d:world_ray",
+    "fragment": "sdf3d:world_ray",
+    "attributes": [
+        "Position"
+    ],
+    "samplers": [
+        { "name": "uVoxels" }
+    ],
+    "uniforms": [
+        { "name": "uCamPos", "type": "float", "count": 3, "values": [0, 0, 0] },
+        { "name": "uInvViewProj", "type": "matrix4x4", "count": 16, "values": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1] },
+        { "name": "uProjView", "type": "matrix4x4", "count": 16, "values": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1] },
+        { "name": "uGridMin", "type": "float", "count": 3, "values": [0, 0, 0] },
+        { "name": "uGridSize", "type": "float", "count": 1, "values": [64] },
+        { "name": "uAtlas", "type": "float", "count": 2, "values": [512, 512] },
+        { "name": "uTileX", "type": "float", "count": 1, "values": [8] },
+        { "name": "uSky", "type": "float", "count": 3, "values": [0.5, 0.7, 1.0] },
+        { "name": "uHorizon", "type": "float", "count": 3, "values": [0.65, 0.65, 0.7] },
+        { "name": "uSunDir", "type": "float", "count": 3, "values": [0.5, 0.85, 0.0] },
+        { "name": "uSunColor", "type": "float", "count": 3, "values": [1.0, 0.8, 0.55] }
+    ]
+}
